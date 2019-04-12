@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/bootstrap/jquery.min.js"></script>
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap-table/bootstrap-table.css">
+    <script src="../js/bootstrap/bootstrap-table/bootstrap-table.js"></script>
+    <script src="../js/bootstrap/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap3/css/bootstrap.css">
+    <script src="../js/bootstrap/bootstrap3/js/bootstrap.js"></script>
+
+    <script src="../js/bootstrap/bootstrap-bootbox/bootbox.js"></script>
+
+</head>
+<body>
+<button type="button" class="btn btn-primary"  onclick="addUser() " >新增</button>
+<table class="table" id="myTable"></table>
+</body>
+<script>
+    $(function () {
+        selectCmd()
+    })
+    
+    function addUser() {
+        bootbox.dialog({
+            title:'添加商品',
+            message: createAddContent("../PageController/jumpamdadd"),
+            closeButton: true,
+            buttons : {
+                "success" : {
+                    "label" : "<i class='icon-ok'></i> 保存",
+                    "className" : "btn-sm btn-success",
+                    "callback" : function() {
+                        $.ajax({
+                            url:'../UserController/addUser',
+                            type:'post',
+                            data:$("#myForm").serialize(),
+                            dataType:'json',
+                            success:function(data){
+                                $('#myTable').bootstrapTable('refresh');
+                            }
+                        });
+                    }
+                },
+                "cancel" : {
+                    "label" : "<i class='icon-info'></i> 取消",
+                    "className" : "btn-sm btn-danger",
+                    "callback" : function() {
+
+                    }
+                }
+            }
+
+        });
+    }
+
+    var res;
+    function createAddContent(url){
+        $.ajax({
+            url:url,
+            async:false,
+            success:function(data){
+                res = data;
+            }
+        });
+        return res;
+    }
+    function selectCmd() {
+        $('#myTable').bootstrapTable({
+            url:'../UserController/selectUserAll',
+            columns:[
+            {checkbox:true},
+            {field:'userId',title:'ID',align:'center',width:150},
+            {field:'userName',title:'用户名称',align:'center',width:150},
+                {field:'ss',title:'操作',align:'center',width:150,formatter:function(value,row,index){
+
+            return '<button type="button" class="btn btn-primary"  onclick="updateUser('+row.userId+') " >修改</button>  <button type="button" class="btn btn-primary"  onclick="deleteUser('+row.userId+') " >删除</button>';
+        }}
+        ]
+    });
+    }
+    //修改
+    function updateUser(id) {
+        bootbox.dialog({
+            title:'修改用户',
+            message: createAddContent("../PageController/jumpamdadd"),
+            closeButton: true,
+            buttons : {
+                "success" : {
+                    "label" : "<i class='icon-ok'></i> 保存",
+                    "className" : "btn-sm btn-success",
+                    "callback" : function() {
+                        $.ajax({
+                            url:'../UserController/baocunUser',
+                            type:'post',
+                            data:$("#myForm").serialize(),
+                            dataType:'json',
+                            success:function(data){
+                                $('#myTable').bootstrapTable('refresh');
+                            }
+                        });
+                    }
+                },
+                "cancel" : {
+                    "label" : "<i class='icon-info'></i> 取消",
+                    "className" : "btn-sm btn-danger",
+                    "callback" : function() {
+
+                    }
+                }
+            }
+
+        });
+        $.ajax({
+            url:"../UserController/selectUserById",
+            data:{
+                id:id
+            },success:function (data) {
+                $("#userId").val(data.userId)
+                $("#userName").val(data.userName)
+            }
+
+        })
+    }
+    function deleteUser(id) {
+        $.ajax({
+            url:"../UserController/deleteUser",
+            data:{
+                id:id
+            },
+            success:function (data) {
+                alert("删除成功")
+                history.go(0)
+            }
+        })
+    }
+
+
+
+</script>
+</html>

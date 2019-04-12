@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jk.dao.UserDao">
+   <select id="selectBookAll"  resultType="com.jk.model.BookBean">
+
+               SELECT
+            ta.autName        bookAuthorName,
+            th.houseName      bookHouseName,
+            tp.paperName      bookWrapUpName,
+            tb.bookEdition    bookEdition,
+            tb.bookEndTime    bookEndTime,
+            tb.bookImg        bookImg,
+            tb.bookInFor      bookInFor,
+            tb.bookISBN       bookISBN,
+            tb.bookName       bookName,
+            tb.bookPack       bookPack,
+            tb.bookPages      bookPages,
+            tb.bookPrice      bookPrice,
+            tb.bookSize       bookSize,
+            tb.bookSuitCount  bookSuitCount,
+            tb.bookWordsNumber  bookWordsNumber
+        FROM
+            t_book tb
+        LEFT JOIN t_author ta ON tb.bookAuthorId = ta.autId
+        LEFT JOIN t_house th ON tb.bookHouseId = th.houseId
+        LEFT JOIN t_paper tp ON tb.bookWrapUpId = tp.paperId
+   </select>
+
+    <insert id="addBook"  parameterType="com.jk.model.BookBean">
+INSERT INTO t_book (
+	bookEdition,
+	bookEndTime,
+	bookImg,
+	bookInFor,
+	bookName,
+	bookPack,
+	bookPages,
+	bookPrice,
+	bookSize,
+	bookSuitCount,
+	bookWordsNumber,
+	bookAuthorId,
+	bookHouseId,
+	bookWrapUpId
+) value(#{bookEdition},#{bookEndTime},#{bookImg},#{bookInFor},#{bookName},#{bookPack},#{bookPages},#{bookPrice},#{bookSize},#{bookSuitCount},#{bookWordsNumber},#{bookAuthorId},#{bookHouseId},#{bookWrapUpId})
+    </insert>
+    <select id="selectBookById"  parameterType="string"  resultType="com.jk.model.BookBean">
+        SELECT
+        t.bookAuthorId,
+        t.bookEdition,
+        t.bookEndTime,
+        t.bookHouseId,
+        t.bookImg,
+        t.bookInFor,
+        t.bookISBN,
+        t.bookName,
+        t.bookPack,
+        t.bookPages,
+        t.bookPrice,
+        t.bookSize,
+        t.bookSuitCount,
+        t.bookWordsNumber,
+        t.bookWrapUpId
+        FROM
+            t_book t  where t.bookISBN=#{value}
+    </select>
+
+    <update id="baocunBook" parameterType="com.jk.model.BookBean">
+UPDATE  t_book t set
+        t.bookAuthorId=#{bookAuthorId},
+        t.bookEdition=#{bookEdition},
+        t.bookEndTime=#{bookEndTime},
+        t.bookHouseId=#{bookHouseId},
+        t.bookImg=#{bookImg},
+        t.bookInFor=#{bookInFor},
+        t.bookName=#{bookName},
+        t.bookPack=#{bookPack},
+        t.bookPages=#{bookPages},
+        t.bookPrice=#{bookPrice},
+        t.bookSize=#{bookSize},
+        t.bookSuitCount=#{bookSuitCount},
+        t.bookWordsNumber=#{bookWordsNumber},
+        t.bookWrapUpId=#{bookWrapUpId}
+          where t.bookISBN=#{bookISBN}
+    </update>
+</mapper>

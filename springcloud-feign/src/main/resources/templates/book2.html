@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/jQuery-2.2.0.min.js"></script>
+    <script src="../js/jquery-1.9.1.min.js"></script>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/gatherInfo.js"></script>
+    <link rel="stylesheet" href="../js/search.css">
+    <link rel="stylesheet" href="../js/tips.css">
+    <script src="../js/wl.js"></script>
+    <script>
+        window.loadFa_toJson_data={query:'%E5%9B%BE%E4%B9%A6'};
+        window.jdpts={};jdpts._st=new Date().getTime();window.pageConfig={
+            closeJpg : 1,
+            compatible: false,
+            searchType: 0,
+            jdfVersion: '2.0.0',
+            floatnav: 1,
+            price_pdos_off: 0,
+            actName: '',
+            pSource: 'search_pc',
+            queryParam: {
+                c1: 0,
+                c2: 0,
+                c3: 0,
+                brand: '',
+                price: '',
+                keyword: '图书',
+                page: '1'
+            }
+        };
+        window.searchUnit={
+            resizeOnebox: function(g,f,j){var g=parseInt(g),i=typeof f,h=typeof j;if(!isNaN(g)){if("string"==i&&f!=""&&g>0){$("#J_oneBoxFrame_"+f).css("height",g+10);h=="function"&&j()}else{if(i=="undefined"||i=="function"){$("#virtualWareIFrame").css("height",g>0?g+10:0);i=="function"&&f()}}}},
+            resizeShopbox: function(e,d){var f=0;switch(e){case 1:case 2:f=145;break;case 3:f=75;break;case 4:f=80;break;default:break}f&&$("#shopboxIFrame").css("height",f).show();typeof(d)=="string"&&(new Image().src=d)},
+            coupon: {}};
+        window.QUERY_KEYWORD='图书';
+        window.REAL_KEYWORD='图书';
+    </script>
+    <script>
+        window.SEARCH = {
+            cid: 3303,
+            ui_ver: '1.0.7',
+            c_category: 0,
+            p_category: 0,
+            enable_adv: 1,
+            enable_prom_adwords: 1,
+            enable_prom_flag: 1,
+            enable_price: 1,
+            enable_stock: 2,
+            enable_yyk: 0,
+            lottery_code: ''
+        };
+    </script>
+</head>
+<body>
+<div id="J_goodsList" class="goods-list-v2 gl-type-4 J-goods-list">
+    <ul id="mybook" class="gl-warp clearfix" data-tpl="2">
+    </ul>
+</div>
+</body>
+<script>
+    $(function () {
+        selectBook()
+    })
+    function selectBook() {
+        $.ajax({
+            url:"../BookController/selectBookAll",
+            type:"post",
+            success:function (data) {
+                for (var i=0;i<=data.length;i++){
+                    var html="";
+                 html+=' <ul id="mybook" class="gl-warp clearfix" data-tpl="2"><li data-sku="10619994733" class="gl-item">'+
+                        '<div class="gl-i-wrap">'+
+                    ' <div class="p-img">'+
+                    '<a target="_blank" title="页数：'+data[i].bookPages+'|字数：'+data[i].bookWordsNumber+'" href="#" onclick="">'+
+                    '   <img width="200" height="200" class="" data-img="1" source-data-lazy-img="" data-lazy-img="done" src="'+data[i].bookImg+'">'+
+                    '   </a>			<div data-lease="" data-catid="3333" data-venid="593280" data-presale="" data-done="1"></div>'+
+                    '</div>'+
+                    ' <div class="p-price">'+
+                    '    <strong class="J_10619994733" data-done="1"><em>￥</em><i>'+data[i].bookPrice+'</i></strong>		</div>'+
+                    '<div class="p-name">'+
+                    '   <a target="_blank" title="'+data[i].bookInFor+'" href="//item.jd.com/10619994733.html" onclick="">'+
+                    '   <em>【全套'+data[i].bookSuitCount+'册】别在该动脑子的时候动感情 青春励志文学书籍 散文随笔畅销<font class="skcolor_ljg">图书</font>成功学畅销书排行榜</em>'+
+                    '</a>'+
+                    '</div>'+
+                    '<div class="p-bookdetails"><span class="p-bi-name" onclick=""><a title="" href="" target="_blank"></a> </span> <em>|</em> <span class="p-bi-store" onclick=""><a title="" href="" target="_blank"></a></span> <em>|</em> <span class="p-bi-date"></span></div>		<div class="p-commit" data-done="1">'+
+                    '</div>'+
+                    '<div class="p-shopnum" data-selfware="0" data-score="5" data-reputation="99" data-done="1">'+
+                    '   <a class="curr-shop" target="_blank" onclick="" href="" title="作者：'+data[i].bookAuthorName+'|简介：'+data[i].bookInFor+'|出版社：'+data[i].bookHouseName+'|发行时间：'+data[i].bookEndTime+'">'+data[i].bookName+'<b class="im-01" style="background:url(//img14.360buyimg.com/uba/jfs/t26764/156/1205787445/713/9f715eaa/5bc4255bN0776eea6.png) no-repeat;" title="联系客服" onclick=""></b></a>'+
+                    '</div>'+
+                    '<div class="p-icons" id="J_pro_10619994733" data-done="1">'+
+                    '    <i class="goods-icons4 J-picon-tips" style="border-color:#4d88ff;color:#4d88ff;" data-idx="1" data-tips="品质服务，放心购物">放心购</i>'+
+                    '    <i class="goods-icons4 J-picon-tips" data-tips="当前收货地址，本商品免邮费">免邮</i>'+
+                    '    <i class="goods-icons2 J-picon-tips" data-tips="退换货免运费">险</i></div>'+
+                    '<div class="p-operate">'+
+                    '   <a class="p-o-btn focus J_focus" data-sku="10619994733" href="javascript:;" onclick=""><i></i>关注</a>'+
+                    '<a class="p-o-btn addcart" href="//cart.jd.com/gate.action?pid=10619994733&amp;pcount=1&amp;ptype=1" target="_blank" onclick="" data-limit="0"><i></i>加入购物车</a>'+
+                    '</div>'+
+                    '</div>'+
+                    '</li></ul>'
+                    $("#mybook").append(html)
+                }
+            }
+        })
+    }
+</script>
+</html>

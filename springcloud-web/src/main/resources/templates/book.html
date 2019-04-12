@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/bootstrap/jquery.min.js"></script>
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap-table/bootstrap-table.css">
+    <script src="../js/bootstrap/bootstrap-table/bootstrap-table.js"></script>
+    <script src="../js/bootstrap/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap3/css/bootstrap.css">
+    <script src="../js/bootstrap/bootstrap3/js/bootstrap.js"></script>
+    <script src="../js/bootstrap/bootstrap-bootbox/bootbox.js"></script>
+</head>
+<body>
+<button type="button" class="btn btn-primary"  onclick="addBook() " >新增</button>
+<table class="table" id="myTable"></table>
+</body>
+<script>
+    $(function () {
+        selectCmd()
+    })
+
+    function addBook() {
+        bootbox.dialog({
+            title:'添加商品',
+            message: createAddContent("../PageController/jumpamdadd"),
+            closeButton: true,
+            buttons : {
+                "success" : {
+                    "label" : "<i class='icon-ok'></i> 保存",
+                    "className" : "btn-sm btn-success",
+                    "callback" : function() {
+                        $.ajax({
+                            url:'../UserController/addBook',
+                            type:'post',
+                            data:$("#myForm").serialize(),
+                            dataType:'json',
+                            success:function(data){
+                                history.go(0)
+                            }
+                        });
+                    }
+                },
+                "cancel" : {
+                    "label" : "<i class='icon-info'></i> 取消",
+                    "className" : "btn-sm btn-danger",
+                    "callback" : function() {
+                    }
+                }
+            }
+        });
+    }
+    var res;
+    function createAddContent(url){
+        $.ajax({
+            url:url,
+            async:false,
+            success:function(data){
+                res = data;
+            }
+        });
+        return res;
+    }
+    function selectCmd() {
+        $('#myTable').bootstrapTable({
+            url:'../UserController/selectBookAll',
+            columns:[
+                {checkbox:true},
+                {field:'bookISBN',title:'图书编号',align:'center',width:150},
+                {field:'bookName',title:'图书名称',align:'center',width:150},
+                {field:'bookAuthorName',title:'作者名称',align:'center',width:150},
+                {field:'bookEdition',title:'图书版次',align:'center',width:150},
+                {field:'bookPack',title:'图书包装',align:'center',width:150},
+                {field:'bookHouseName',title:'出版社名称',align:'center',width:150},
+                {field:'bookEndTime',title:'出版时间',align:'center',width:150},
+                {field:'bookSize',title:'开本',align:'center',width:150},
+                {field:'bookSuitCount',title:'套装数量',align:'center',width:150},
+                {field:'bookPages',title:'页数',align:'center',width:150},
+                {field:'bookWordsNumber',title:'字数',align:'center',width:150},
+                {field:'bookWrapUpName',title:'用纸',align:'center',width:150},
+                {field:'bookInFor',title:'简介',align:'center',width:150},
+                {field:'bookPrice',title:'图书价格',align:'center',width:150},
+                {field:'tushufengmian',title:'图书封面',align:'center',width:200,
+                    formatter:function(value,row,index){
+                        return '<img src="'+row.bookImg+'" style="height: 50px;width: 50px">';
+                    }
+                },
+                {field:'ss',title:'操作',align:'center',width:150,formatter:function(value,row,index){
+                        return '<button type="button" class="btn btn-primary"  onclick="updateBook('+row.bookISBN+') " >修改</button>  <button type="button" class="btn btn-primary"  onclick="deleteBook('+row.bookISBN+') " >删除</button>';
+                    }}
+            ]
+        });
+    }
+    //修改
+    function updateBook(id) {
+        bootbox.dialog({
+            title:'修改用户',
+            message: createAddContent("../PageController/jumpamdadd"),
+            closeButton: true,
+            buttons : {
+                "success" : {
+                    "label" : "<i class='icon-ok'></i> 保存",
+                    "className" : "btn-sm btn-success",
+                    "callback" : function() {
+                        $.ajax({
+                            url:'../UserController/baocunBook',
+                            type:'post',
+                            data:$("#myForm").serialize(),
+                            dataType:'json',
+                            success:function(data){
+                                history.go(0)
+                            }
+                        });
+                    }
+                },
+                "cancel" : {
+                    "label" : "<i class='icon-info'></i> 取消",
+                    "className" : "btn-sm btn-danger",
+                    "callback" : function(){
+
+                        $("#myForm")[0].reset();
+                    }
+                }
+            }
+        });
+        $.ajax({
+            url:"../UserController/selectBookById",
+            data:{
+                id:id
+            },success:function (data) {
+                $("#bookISBN").val(data.bookISBN)
+                $("#bookName").val(data.bookName)
+
+                $("#bookAuthorId").val(data.bookAuthorId)
+
+                $("#bookEdition").val(data.bookEdition)
+                $("#bookPack").val(data.bookPack)
+
+                $("#bookHouseId").val(data.bookHouseId)
+
+                $("#bookEndTime").val(data.bookEndTime)
+                $("#bookSize").val(data.bookSize)
+                $("#bookSuitCount").val(data.bookSuitCount)
+                $("#bookPages").val(data.bookPages)
+                $("#bookInFor").val(data.bookInFor)
+                $("#bookWordsNumber").val(data.bookWordsNumber)
+
+                $("#bookWrapUpId").val(data.bookWrapUpId)
+
+                $("#bookPrice").val(data.bookPrice)
+                $("#bookImg").val(data.bookImg)
+            }
+        })
+    }
+    function deleteBook(id) {
+        $.ajax({
+            url:"../UserController/deleteBook",
+            data:{
+                id:id
+            },
+            success:function (data) {
+                alert("删除成功")
+                history.go(0)
+            }
+        })
+    }
+</script>
+</html>

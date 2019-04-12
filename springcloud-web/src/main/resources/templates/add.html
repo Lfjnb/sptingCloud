@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/bootstrap/jquery.min.js"></script>
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap-table/bootstrap-table.css">
+    <script src="../js/bootstrap/bootstrap-table/bootstrap-table.js"></script>
+    <script src="../js/bootstrap/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap3/css/bootstrap.css">
+    <script src="../js/bootstrap/bootstrap3/js/bootstrap.js"></script>
+    <script src="../js/bootstrap/bootstrap-bootbox/bootbox.js"></script>
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css">
+    <script src="../js/bootstrap/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+    <script src="../js/bootstrap/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+</head>
+
+
+
+
+<body>
+<form id="myForm">
+    <div class="form-group">
+        <input  type="hidden"  id="bookISBN"  name="bookISBN">
+        <label for="bookName">图书名称</label>
+        <input type="text" class="form-control" id="bookName" placeholder="图书名称" name="bookName" >
+    </div>
+<!--图书作者下拉-->
+    <div class="form-group">
+        <label for="bookAuthorId" class="col-sm-2 control-label">作者名称</label>
+            <select id="bookAuthorId" name="bookAuthorId" class="form-control">
+            </select>
+    </div>
+
+    <div class="form-group">
+        <label for="bookEdition">图书版次</label>
+        <input type="text" class="form-control" id="bookEdition" placeholder="图书版次" name="bookEdition" >
+    </div>
+    <div class="form-group">
+        <label for="bookPack">图书包装</label>
+        <input type="text" class="form-control" id="bookPack" placeholder="图书包装" name="bookPack" >
+    </div>
+    <!--图书出版社下拉-->
+    <div class="form-group">
+        <label for="bookHouseId" class="col-sm-2 control-label">出版社</label>
+        <select id="bookHouseId" name="bookHouseId" class="form-control">
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="bookEndTime">出版时间</label>
+        <input type="text" class="form-control date" name="bookEndTime" id="bookEndTime">
+    </div>
+    <div class="form-group">
+        <label for="bookSize">开本</label>
+        <input type="text" class="form-control" id="bookSize" placeholder="开本" name="bookSize" >
+    </div>
+    <div class="form-group">
+        <label for="bookSuitCount">套装数量</label>
+        <input type="text" class="form-control" id="bookSuitCount" placeholder="套装数量" name="bookSuitCount" >
+    </div>
+    <div class="form-group">
+        <label for="bookPages">图书页数</label>
+        <input type="text" class="form-control" id="bookPages" placeholder="图书页数" name="bookPages" >
+    </div>
+    <div class="form-group">
+        <label for="bookWordsNumber">字数</label>
+        <input type="text" class="form-control" id="bookWordsNumber" placeholder="字数" name="bookWordsNumber" >
+    </div>
+    <!--图书用纸类型下拉-->
+    <div class="form-group">
+        <label for="bookWrapUpId" class="col-sm-2 control-label">用纸类型</label>
+        <select id="bookWrapUpId" name="bookWrapUpId" class="form-control">
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="bookInFor">图书简介</label>
+        <input type="text" class="form-control" id="bookInFor" placeholder="图书简介" name="bookInFor" >
+    </div>
+    <div class="form-group">
+        <label for="bookPrice">图书价格</label>
+        <input type="text" class="form-control" id="bookPrice" placeholder="图书价格" name="bookPrice" >
+    </div>
+    <div class="form-group">
+        <label for="bookImg">图书封面</label>
+        <input type="text" class="form-control" id="bookImg" placeholder="图书封面" name="bookImg" >
+    </div>
+</form>
+</body>
+<script>
+    $(function () {
+        /*加载图书作者*/
+        initAut()
+        /*图书出版社下拉*/
+        initHouse()
+        /*加载图书作者*/
+        initWrapUp()
+    })
+    function initAut(){
+        $.ajax({
+            url:'../UserController/selectAut',
+            type:"post",
+            dataType:"json",
+            success:function(data){
+                var html = "<option value='-1'>请选择</option>";
+                for (var i = 0; i < data.length; i++) {
+                    html += "<option value='"+data[i].autId+"'>"+data[i].autName+"</option>"
+                }
+                $("#bookAuthorId").html(html);
+            },
+            error:function(){
+                alert("加载失败")
+            }
+        })
+    }
+    function initHouse(){
+        $.ajax({
+            url:'../UserController/selectHouse',
+            type:"post",
+            dataType:"json",
+            success:function(data){
+                var html = "<option value='-1'>请选择</option>";
+                for (var i = 0; i < data.length; i++) {
+                    html += "<option value='"+data[i].houseId+"'>"+data[i].houseName+"</option>"
+                }
+                $("#bookHouseId").html(html);
+            },
+            error:function(){
+                alert("加载失败")
+            }
+        })
+    }
+
+    function initWrapUp(){
+        $.ajax({
+            url:'../UserController/selectWrapUp',
+            type:"post",
+            dataType:"json",
+            success:function(data){
+                var html = "<option value='-1'>请选择</option>";
+                for (var i = 0; i < data.length; i++) {
+                    html += "<option value='"+data[i].paperId+"'>"+data[i].paperName+"</option>"
+                }
+                $("#bookWrapUpId").html(html);
+            },
+            error:function(){
+                alert("加载失败")
+            }
+        })
+    }
+    $('.date').datetimepicker({
+        language: 'zh-CN',//显示中文
+        format: 'yyyy-mm-dd',//显示格式
+        minView: "month",//设置只显示到月份
+        initialDate: new Date(),//初始化当前日期
+        autoclose: true,//选中自动关闭
+        todayBtn: true//显示今日按钮
+    });
+</script>
+</html>
